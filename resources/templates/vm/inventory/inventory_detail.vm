@@ -1,0 +1,40 @@
+#parse("/templates/navbar.vm")
+#@mainLayout()
+<form method="post">
+    <div class="form-group">
+        <label> Item Name </label>
+        <input type="text" class="form-control" name="name" value="$item.getName()" required autofocus>
+    </div>
+    <div class="form-group">
+        <label>Category</label>
+        <select class="form-control" name="category">
+            #foreach($category in $categoryList)
+                #if($category.getName() != $item.getCategory())
+                    <option value="$category.getId()"> $category.getName() </option>
+                #else
+                    <option selected value="$category.getId()">$item.getCategory()</option>
+                #end
+            #end
+        </select>
+    </div>
+    <div class="form-group">
+        <label> Stock </label>
+        <input type="number" min="1" class="form-control" name="stock" value="$item.getStock()" required>
+    </div>
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Rp</span>
+        </div>
+        <input type="number" min="0" class="form-control" name="price" value="$item.getPrice()" required>
+    </div>
+    <br><br>
+
+    <button type="submit" class="btn btn-success">
+        <i data-feather="save"></i> Save
+    </button>
+
+    <a href="$WebPath.getINVENTORY()">
+        <i data-feather="x"></i> Cancel
+    </a>
+</form>
+#end

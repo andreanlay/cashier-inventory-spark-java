@@ -1,0 +1,63 @@
+#parse("/templates/navbar.vm")
+#@mainLayout()
+    <a href="$WebPath.getCATEGORY_ADD()" class="btn btn-primary float-right">
+        <i data-feather="plus"></i> Add New Category
+    </a>
+    <br><br>
+
+    <br><br>
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Category Name</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach($category in $categoryList)
+                <tr>
+                    <td>$velocityCount</td>
+                    <td>$category.getName()</td>
+                    <td>
+                        <a href="$WebPath.getCATEGORY()$category.getId()/edit/">
+                            <i data-feather="edit"></i> Edit
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#deleteModal$category.getId()">
+                            <i data-feather="trash-2"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+            #end
+        </tbody>
+    </table>
+    #foreach( $category in $categoryList)
+        <div class="modal" id="deleteModal$category.getId()" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete Category?</h5>
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="close">
+                            <span aria-hidden="true">x</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure want to delete category $category.getName()?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <i data-feather="x"></i> Cancel
+                        </button>
+                        <form method="post" action="$WebPath.getCATEGORY()$category.getId()/delete/">
+                            <button type="submit" class="btn btn-danger">
+                                <i data-feather="trash-2"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    #end
+    <small class="text-muted">Make sure you delete related items before deleting a category.</small>
+#end

@@ -1,0 +1,17 @@
+#parse("/templates/navbar.vm")
+#@mainLayout()
+<form method="post">
+    <div class="form-group">
+        <label for="name"> Category Name </label>
+        <input type="text" class="form-control" name="name" value="$category.getName()" required autofocus>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        <i data-feather="save"></i> Save
+    </button>
+
+    <a href="$WebPath.getCATEGORY()">
+        <i data-feather="x"></i> Cancel
+    </a>
+</form>
+#end

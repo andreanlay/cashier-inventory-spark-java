@@ -1,0 +1,68 @@
+#parse("/templates/navbar.vm")
+#@mainLayout()
+        <a href="$WebPath.getINVENTORY_ADD()" class="btn btn-primary float-right">
+            <i data-feather="plus"></i> Add New Item
+        </a>
+        <br><br>
+
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Stock</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+                #foreach($item in $itemList)
+                    <tr>
+                        <td>$velocityCount</td>
+                        <td>$item.getName()</td>
+                        <td>$item.getCategory()</td>
+                        <td>$item.getStock()</td>
+                        <td>$item.getPrice()</td>
+                        <td>
+                            <a href="$WebPath.getINVENTORY()$item.getId()/edit/">
+                                <i data-feather="edit"></i> Edit
+                            </a>
+
+                            <a href="#" data-toggle="modal" data-target="#deleteModal$item.getId()">
+                                <i data-feather="trash-2"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+    #foreach( $item in $itemList)
+    <div class="modal" id="deleteModal$item.getId()" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Item?</h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure want to delete $item.getName() ($item.getCategory()) from inventory?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <i data-feather="x"></i> Cancel
+                    </button>
+                    <form method="post" action="$WebPath.getINVENTORY()$item.getId()/delete/">
+                        <button type="submit" class="btn btn-danger">
+                            <i data-feather="trash-2"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    #end
+#end

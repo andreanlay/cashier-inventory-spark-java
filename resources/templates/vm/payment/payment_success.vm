@@ -1,0 +1,22 @@
+#parse("/templates/navbar.vm")
+#@mainLayout()
+    <div class="row justify-content-md-center">
+        <h1 style="color: lawngreen">Payment Success!</h1>
+    </div>
+    <br>
+    <div class="row justify-content-md-center">
+        <small class="text-muted">Transaction Time : $transactionTime</small>
+    </div>
+    <br>
+    <div class="row justify-content-md-center">
+        <h3>Change Money : Rp$changeMoney</h3>
+    </div>
+    <br>
+    <div class="row justify-content-md-center">
+        <h5>Don't forget to say thank you!</h5>
+    </div>
+    <br>
+    <div class="row justify-content-md-center">
+        <a href="$WebPath.getDASHBOARD()" class="btn btn-primary">Back to dashboard</a>
+    </div>
+#end

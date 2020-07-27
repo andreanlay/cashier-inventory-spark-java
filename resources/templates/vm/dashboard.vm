@@ -1,0 +1,165 @@
+#parse("/templates/navbar.vm")
+#@mainLayout()
+    <div class="row">
+        <div class="col-md-6 border">
+            <br>
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-6">
+                        <select class="form-control" name="category">
+                            <option value="-1">All</option>
+                            #foreach($category in $categoryList)
+                                #if($currentCategory == $category.getId())
+                                    <option selected value="$currentCategory">$category.getName()</option>
+                                #else
+                                    <option value="$category.getId()"> $category.getName() </option>
+                                #end
+                            #end
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-primary">
+                            Choose
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <br>
+            <h1>Item List</h1>
+            #if($stockExceeded)
+                <p class="float-right" style="color: red;">Item out of stock!</p>
+            #end
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                    #foreach($item in $itemList)
+                    <tr>
+                        <td>$velocityCount</td>
+                        <td>$item.getName()</td>
+                        <td>Rp$item.getPrice()</td>
+                        <td>
+                            <form method="post" action="$WebPath.getDASHBOARD_CART()add/$item.getId()/">
+                                <button type="submit" style="background-color: transparent; border: 0; color: dodgerblue;"
+                                        class="btn btn-primary">
+                                    <i data-feather="shopping-cart"></i> Add
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-6 border">
+            <br>
+            <h1>Transaction</h1>
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                    #foreach($item in $cartItems)
+                    <tr>
+                        <td>$velocityCount</td>
+                        <td>$item.getName()</td>
+                        <td>$item.getQuantity()</td>
+                        <td>Rp$item.getPrice()</td>
+                        <td>
+                            <a href="#" data-toggle="modal" data-target="#editModal$item.getId()" class="mx-2">
+                                <i data-feather="edit"></i> Edit
+                            </a>
+                            <a href="#" data-toggle="modal" data-target="#deleteModal$item.getId()">
+                                <i data-feather="trash-2"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+            <hr>
+            <div class="float-right">
+                <label>Total :</label>
+                <h2>Rp$totalPrice</h2>
+            </div>
+            <div class="mx-2 center-align">
+                <a href="$WebPath.getPAYMENT()" class="btn btn-success" style="width: 150px; height: 75px; font-size: 32px">Pay</a>
+            </div>
+        </div>
+    </div>
+
+    #foreach( $item in $cartItems)
+        <div class="modal" id="editModal$item.getId()" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Item</h5>
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="close">
+                            <span aria-hidden="true">x</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="$WebPath.getDASHBOARD_CART()edit/$item.getId()/">
+                            <input type="hidden" class="form-control" name="id" value="$item.getP_id()">
+                            <div class="form-group">
+                                <label> Item Name </label>
+                                <input type="text" class="form-control" name="name" value="$item.getName()" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label> Quantity </label>
+                                <input type="number" min="1" max="$maxQty" class="form-control" name="quantity" value="$item.getQuantity()" required autofocus>
+                            </div>
+                            #if($qtyExceeded)
+                                <p style="color: red">Quantity more than available stock!</p>
+                            #end
+                            <button type="submit" class="btn btn-success float-right">
+                                <i data-feather="save"></i> Save
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="deleteModal$item.getId()" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete Item?</h5>
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="close">
+                            <span aria-hidden="true">x</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure want to delete $item.getName() from Cart?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <i data-feather="x"></i> Cancel
+                        </button>
+                        <form method="post" action="$WebPath.getDASHBOARD_CART()delete/$item.getId()/">
+                            <button type="submit" class="btn btn-danger">
+                                <i data-feather="trash-2"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    #end
+#end
